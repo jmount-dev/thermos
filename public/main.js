@@ -1,25 +1,46 @@
 const loadBtn = document.getElementById('load');
 const urlInput = document.getElementById('url');
-const contentDiv = document.getElementById('content');
+const readerDiv = document.getElementById('readerContent');
+const iframe = document.getElementById('originalFrame');
 const originalToggle = document.getElementById('original');
 const darkToggle = document.getElementById('dark');
+const spinner = document.getElementById('spinner');
 
 loadBtn.addEventListener('click', async () => {
   const url = urlInput.value.trim();
   if (!url) return;
-  const resp = await fetch(`/fetch?url=${encodeURIComponent(url)}`);
-  const data = await resp.json();
-  document.title = data.title;
-  contentDiv.innerHTML = data.content;
+  readerDiv.innerHTML = '';
+  readerDiv.style.color = '';
+  iframe.src = '';
+  spinner.style.display = 'block';
+  originalToggle.checked = false;
+  readerDiv.style.display = 'block';
+  iframe.style.display = 'none';
+  try {
+    const resp = await fetch(`/fetch?url=${encodeURIComponent(url)}`);
+    const data = await resp.json();
+    spinner.style.display = 'none';
+    if (data.error) {
+      readerDiv.textContent = data.error;
+      readerDiv.style.color = 'red';
+      document.title = 'Thermos Reader';
+      return;
+    }
+
+    document.title = data.title;
+    readerDiv.innerHTML = data.content;
+    iframe.src = url;
+  } catch (err) {
+    spinner.style.display = 'none';
+    readerDiv.textContent = 'Failed to load';
+    readerDiv.style.color = 'red';
+  }
 });
 
 originalToggle.addEventListener('change', () => {
-  const url = urlInput.value.trim();
-  if (!url) return;
-  if (originalToggle.checked) {
-    window.open(url, '_blank');
-    originalToggle.checked = false;
-  }
+  const showOriginal = originalToggle.checked;
+  readerDiv.style.display = showOriginal ? 'none' : 'block';
+  iframe.style.display = showOriginal ? 'block' : 'none';
 });
 
 darkToggle.addEventListener('change', () => {
