@@ -1,0 +1,22 @@
+body {
+  font-family: sans-serif;
+  line-height: 1.6;
+  margin: 20px;
+  background: #fff;
+  color: #222;
+}
+
+.dark {
+  background: #1e1e1e;
+  color: #ddd;
+}
+
+#controls {
+  margin-bottom: 1rem;
+}
+
+#content p,
+#content h1, #content h2, #content h3,
+#content ul, #content ol {
+  margin: 1rem 0;
+}
