@@ -49,7 +49,6 @@ app.get('/fetch', async (req, res) => {
       const fallback = purify.sanitize(dom.window.document.body.innerHTML);
       content = fallback || '<p>No readable content.</p>';
     }
-
     res.json({ title, content });
   } catch (err) {
     res.status(500).json({ error: err.message });
