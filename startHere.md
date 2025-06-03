@@ -49,6 +49,7 @@ thermos
 │   ├── index.html       # UI shell & JS
 │   ├── main.js          # Fetch + toggle logic
 │   └── styles.css       # Light & dark theme
+├── cli.js              # Standalone command line fetcher
 └── README.md
 ```
 
@@ -124,6 +125,16 @@ thermos
 * [ ] Loading *dallaslibrary2.org* returns readable content.
 * [ ] Dark mode toggle flips colors instantly.
 * [ ] Original view opens (iframe or new tab) and handles sites that deny framing.
+
+### CLI Usage
+
+To grab an article without running the server, use the standalone script:
+
+```bash
+npm run cli -- <url>
+```
+
+It prints sanitized HTML to stdout. Redirect it to a file to read in your browser.
 
 ---
 
