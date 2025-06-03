@@ -15,8 +15,13 @@ body {
   margin-bottom: 1rem;
 }
 
-#content p,
-#content h1, #content h2, #content h3,
-#content ul, #content ol {
+#readerContent p,
+#readerContent h1, #readerContent h2, #readerContent h3,
+#readerContent ul, #readerContent ol {
   margin: 1rem 0;
+}
+
+#originalFrame {
+  width: 100%;
+  border: none;
 }
