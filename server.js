@@ -23,18 +23,31 @@ app.get('/fetch', async (req, res) => {
 
   try {
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('fetch failed');
+    }
+
     const html = await response.text();
     const dom = new JSDOM(html, { url });
-    const reader = new Readability(dom.window.document);
-    const article = reader.parse();
     const purify = createDOMPurify(dom.window);
-    let content, title;
-    if (article) {
-      title = article.title;
+    const reader = new Readability(dom.window.document);
+
+    let article;
+    let content = '';
+    let title = dom.window.document.title;
+
+    try {
+      article = reader.parse();
+    } catch (e) {
+      // ignore parse errors and fall back
+    }
+
+    if (article && article.content) {
       content = purify.sanitize(article.content);
+      title = article.title || title;
     } else {
-      title = dom.window.document.title;
-      content = purify.sanitize(dom.window.document.body.innerHTML);
+      const fallback = purify.sanitize(dom.window.document.body.innerHTML);
+      content = fallback || '<p>No readable content.</p>';
     }
     res.json({ title, content });
   } catch (err) {

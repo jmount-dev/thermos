@@ -10,6 +10,7 @@ loadBtn.addEventListener('click', async () => {
   const url = urlInput.value.trim();
   if (!url) return;
   readerDiv.innerHTML = '';
+  readerDiv.style.color = '';
   iframe.src = '';
   spinner.style.display = 'block';
   originalToggle.checked = false;
@@ -21,15 +22,18 @@ loadBtn.addEventListener('click', async () => {
     spinner.style.display = 'none';
     if (data.error) {
       readerDiv.textContent = data.error;
+      readerDiv.style.color = 'red';
       document.title = 'Thermos Reader';
-    } else {
-      document.title = data.title;
-      readerDiv.innerHTML = data.content || '';
-      iframe.src = url;
+      return;
     }
+
+    document.title = data.title;
+    readerDiv.innerHTML = data.content;
+    iframe.src = url;
   } catch (err) {
     spinner.style.display = 'none';
     readerDiv.textContent = 'Failed to load';
+    readerDiv.style.color = 'red';
   }
 });
 
